@@ -86,15 +86,8 @@ class StoryList {
       }
     });
 
-    // return response
-
-    // const { storyId, title, author, url, username, createdAt } = response.data.story;
-    // console.log(storyId)
-    console.log('storyID', response.data.story.storyId)
-
     const storyObj = new Story(response.data.story);
 
-    console.log("storyObj", storyObj)
     this.stories.push(storyObj)
 
     return storyObj;
