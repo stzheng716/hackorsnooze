@@ -22,7 +22,7 @@ class Story {
   }
 
   /** Parses hostname out of URL and returns it. */
-//TODO: parse out just the domain name of the article
+  //TODO: parse out just the domain name of the article
   getHostName() {
     // UNIMPLEMENTED: complete this function!
     return "hostname.com";
@@ -68,18 +68,36 @@ class StoryList {
 
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story
-   * - obj of {title, author, url}
+   * - newStory - obj of {title, author, url}
    *
    * Returns the new Story instance
    */
-//TODO: post request, will init a new user in sign up and init a new story
   async addStory(user, newStory) {
     const response = await axios({
       url: `${BASE_URL}/stories`,
       method: "POST",
-      Content-Type: "",
-    })
-    // new Story(storyId, title, author, url, username, createdAt)
+      data: {
+        "token": user.loginToken,
+        "story": {
+          "author": newStory.author,
+          "title": newStory.title,
+          "url": newStory.url
+        }
+      }
+    });
+
+    // return response
+
+    // const { storyId, title, author, url, username, createdAt } = response.data.story;
+    // console.log(storyId)
+    console.log('storyID', response.data.story.storyId)
+
+    const storyObj = new Story(response.data.story);
+
+    console.log("storyObj", storyObj)
+    this.stories.push(storyObj)
+
+    return storyObj;
   }
 }
 
@@ -95,13 +113,13 @@ class User {
    */
 
   constructor({
-                username,
-                name,
-                createdAt,
-                favorites = [],
-                ownStories = []
-              },
-              token) {
+    username,
+    name,
+    createdAt,
+    favorites = [],
+    ownStories = []
+  },
+    token) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;
