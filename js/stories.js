@@ -50,3 +50,13 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** */
+
+async function getNewStoryAndDisplay(){
+  const title = $("#new-story-title").val()
+  const author = $("#new-story-author").val()
+  const URL = $("#new-story-URL").val()
+
+  await storyList.addStory(currentUser ,{title, author, URL})
+}
