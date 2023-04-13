@@ -58,5 +58,11 @@ async function getNewStoryAndDisplay(){
   const author = $("#new-story-author").val()
   const URL = $("#new-story-URL").val()
 
-  await storyList.addStory(currentUser ,{title, author, URL})
+  storyList = await StoryList.getStories();
+
+  console.log(currentUser)
+
+  await storyList.addStory(currentUser ,{title, author, URL});
 }
+
+$newStoryForm.on("submit", getNewStoryAndDisplay);
