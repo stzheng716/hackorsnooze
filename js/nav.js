@@ -17,7 +17,7 @@ $body.on("click", "#nav-all", navAllStories);
 
 /** shows the new story form when submit button is clicked */
 
-function navSubmit(evt){
+function navSubmit(evt) {
   evt.preventDefault();
   $newStoryForm.show();
 }

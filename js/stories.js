@@ -51,18 +51,25 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
-/** */
+/**
+ * gets the inputs from the new story form and uses them to create a new
+ * instance of the Stoty object.
+ * adds the new story object to the exisiting
+ * storyList and displays it on the page.
+*/
 
-async function getNewStoryAndDisplay(){
-  const title = $("#new-story-title").val()
-  const author = $("#new-story-author").val()
-  const URL = $("#new-story-URL").val()
+async function getNewStoryAndDisplay(evt) {
+  evt.preventDefault();
+
+  const title = $("#new-story-title").val();
+  const author = $("#new-story-author").val();
+  const url = $("#new-story-URL").val();
 
   storyList = await StoryList.getStories();
 
-  console.log(currentUser)
+  await storyList.addStory(currentUser, { title, author, url });
 
-  await storyList.addStory(currentUser ,{title, author, URL});
+  putStoriesOnPage();
 }
 
 $newStoryForm.on("submit", getNewStoryAndDisplay);
