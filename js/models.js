@@ -22,7 +22,7 @@ class Story {
   }
 
   /** Parses hostname out of URL and returns it. */
-
+//TODO: parse out just the domain name of the article
   getHostName() {
     // UNIMPLEMENTED: complete this function!
     return "hostname.com";
@@ -72,9 +72,14 @@ class StoryList {
    *
    * Returns the new Story instance
    */
-
-  async addStory( /* user, newStory */) {
-    // UNIMPLEMENTED: complete this function!
+//TODO: post request, will init a new user in sign up and init a new story
+  async addStory(user, newStory) {
+    const response = await axios({
+      url: `${BASE_URL}/stories`,
+      method: "POST",
+      Content-Type: "",
+    })
+    // new Story(storyId, title, author, url, username, createdAt)
   }
 }
 
