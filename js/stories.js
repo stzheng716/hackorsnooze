@@ -22,20 +22,16 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   console.debug("generateStoryMarkup", story);
 
-  const hostName = story.getHostName();
-
   if (currentUser !== undefined) {
-    if (currentUser.favorites.some((e) => e.storyId === story.storyId)) {
-      return generateFavoriteStoryMarkup(story, hostName)
+    if (currentUser.isFavorite(story)) {
+      return generateFavoriteStoryMarkup(story)
     } else {
-      return generateLoggedInStoryMarkup(story, hostName)
+      return generateLoggedInStoryMarkup(story)
     }
   } else {
-    return generateLoggedOutStoryMarkup(story, hostName)
+    return generateLoggedOutStoryMarkup(story)
   }
 }
-//TODO: add "storyId-" in front of story id
-//TODO: fix hostname
 
 /**
  *
@@ -43,13 +39,13 @@ function generateStoryMarkup(story) {
  * @param {string} hostName
  * @returns {string} the markup for the story if the user is logged out
  */
-function generateLoggedOutStoryMarkup(story, hostName) {
+function generateLoggedOutStoryMarkup(story) {
   return $(`
-    <li id="${story.storyId}">
+    <li id="star-${story.storyId}">
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
       </a>
-      <small class="story-hostname">(${hostName})</small>
+      <small class="story-hostname">(${story.getHostName()})</small>
       <small class="story-author">by ${story.author}</small>
       <small class="story-user">posted by ${story.username}</small>
     </li>
@@ -62,14 +58,14 @@ function generateLoggedOutStoryMarkup(story, hostName) {
  * @param {*} hostName
  * @returns the markup for the story if the user is logged in
  */
-function generateLoggedInStoryMarkup(story, hostName) {
+function generateLoggedInStoryMarkup(story) {
   return $(`
-    <li id="${story.storyId}">
+    <li id="star-${story.storyId}">
       <i class="bi bi-star"></i>
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
       </a>
-      <small class="story-hostname">(${hostName})</small>
+      <small class="story-hostname">(${story.getHostName()})</small>
       <small class="story-author">by ${story.author}</small>
       <small class="story-user">posted by ${story.username}</small>
     </li>
@@ -83,14 +79,14 @@ function generateLoggedInStoryMarkup(story, hostName) {
  * @returns returns the markup for the story if the story is in the user's
  * favorites list
  */
-function generateFavoriteStoryMarkup(story, hostName) {
+function generateFavoriteStoryMarkup(story) {
   return $(`
-    <li id="${story.storyId}">
+    <li id="star-${story.storyId}">
       <i class="bi bi-star-fill"></i>
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
       </a>
-      <small class="story-hostname">(${hostName})</small>
+      <small class="story-hostname">(${story.getHostName()})</small>
       <small class="story-author">by ${story.author}</small>
       <small class="story-user">posted by ${story.username}</small>
     </li>
@@ -109,7 +105,7 @@ async function handleStarClick(evt) {
     .parent().attr("id");
 
   storyList = await StoryList.getStories();
-  const currentStory = storyList.stories.find(story => story.storyId === currentStoryID);
+  const currentStory = storyList.stories.find(story => story.storyId === currentStoryID.slice("star-".length));
 
   if (currentStar.hasClass("bi-star-fill")) {
     currentUser.addFavorite(currentStory);

@@ -27,6 +27,7 @@ class Story {
     // UNIMPLEMENTED: complete this function!
     return "hostname.com";
   }
+
 }
 
 
@@ -248,5 +249,7 @@ class User {
     });
   }
 
-  // TODO: isfavorite method
+  isFavorite(story) {
+    return this.favorites.some((e) => e.storyId === story.storyId)
+  }
 }
