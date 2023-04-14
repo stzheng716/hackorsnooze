@@ -24,34 +24,78 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName();
 
-  if (currentUser.favorites.some((e) => e.storyId === story.storyId)) {
-    return $(`
-      <li id="${story.storyId}">
-        <i class="bi bi-star-fill"></i>
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-      </li>
-    `);
+  if (currentUser !== undefined) {
+    if (currentUser.favorites.some((e) => e.storyId === story.storyId)) {
+      return generateFavoriteStoryMarkup(story, hostName)
+    } else {
+      return generateLoggedInStoryMarkup(story, hostName)
+    }
   } else {
-    return $(`
-      <li id="${story.storyId}">
-        <i class="bi bi-star"></i>
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-      </li>
-    `);
+    return generateLoggedOutStoryMarkup(story, hostName)
   }
 }
+//TODO: add "storyId-" in front of story id
+//TODO: fix hostname
 
+/**
+ *
+ * @param {Story} story
+ * @param {string} hostName
+ * @returns {string} the markup for the story if the user is logged out
+ */
+function generateLoggedOutStoryMarkup(story, hostName) {
+  return $(`
+    <li id="${story.storyId}">
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <small class="story-user">posted by ${story.username}</small>
+    </li>
+  `);
+}
 
+/**
+ *
+ * @param {*} story
+ * @param {*} hostName
+ * @returns the markup for the story if the user is logged in
+ */
+function generateLoggedInStoryMarkup(story, hostName) {
+  return $(`
+    <li id="${story.storyId}">
+      <i class="bi bi-star"></i>
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <small class="story-user">posted by ${story.username}</small>
+    </li>
+  `);
+}
+
+/**
+ *
+ * @param {*} story
+ * @param {*} hostName
+ * @returns returns the markup for the story if the story is in the user's
+ * favorites list
+ */
+function generateFavoriteStoryMarkup(story, hostName) {
+  return $(`
+    <li id="${story.storyId}">
+      <i class="bi bi-star-fill"></i>
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <small class="story-user">posted by ${story.username}</small>
+    </li>
+  `);
+}
 
 /**
  * add event listener to star to toggle the star fill + add to favorites

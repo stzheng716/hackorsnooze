@@ -211,7 +211,6 @@ class User {
     }
   }
 
-  //TODO: favorite method
   /**
    * takes in an instance of the Story class
    * sends a POST request to the API to update the favorite status
@@ -229,6 +228,11 @@ class User {
   }
 
   //TODO: un-favorite method
+  /**
+   * takes in an instance of the Story class
+   * checks if that story is in the User's favrites array and removes it
+   * sends a DELETE request to the API.
+   */
   async removeFavorite(story) {
     const isFavorited = (element) => element === story;
     const index = this.favorites.findIndex(isFavorited);
@@ -243,4 +247,6 @@ class User {
       }
     });
   }
+
+  // TODO: isfavorite method
 }
