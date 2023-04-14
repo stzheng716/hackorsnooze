@@ -11,7 +11,7 @@ let currentUser;
 
 async function login(evt) {
   console.debug("login", evt);
-  // evt.preventDefault();
+  evt.preventDefault();
 
   // grab the username and password
   const username = $("#login-username").val();

@@ -41,7 +41,7 @@ function generateStoryMarkup(story) {
  */
 function generateLoggedOutStoryMarkup(story) {
   return $(`
-    <li id="star-${story.storyId}">
+    <li id="story-${story.storyId}">
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
       </a>
@@ -60,7 +60,7 @@ function generateLoggedOutStoryMarkup(story) {
  */
 function generateLoggedInStoryMarkup(story) {
   return $(`
-    <li id="star-${story.storyId}">
+    <li id="story-${story.storyId}">
       <i class="bi bi-star"></i>
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
@@ -81,7 +81,7 @@ function generateLoggedInStoryMarkup(story) {
  */
 function generateFavoriteStoryMarkup(story) {
   return $(`
-    <li id="star-${story.storyId}">
+    <li id="story-${story.storyId}">
       <i class="bi bi-star-fill"></i>
       <a href="${story.url}" target="a_blank" class="story-link">
         ${story.title}
@@ -105,7 +105,7 @@ async function handleStarClick(evt) {
     .parent().attr("id");
 
   storyList = await StoryList.getStories();
-  const currentStory = storyList.stories.find(story => story.storyId === currentStoryID.slice("star-".length));
+  const currentStory = storyList.stories.find(story => story.storyId === currentStoryID.slice("story-".length));
 
   if (currentStar.hasClass("bi-star-fill")) {
     currentUser.addFavorite(currentStory);
