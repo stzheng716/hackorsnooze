@@ -217,9 +217,7 @@ class User {
    * sends a POST request to the API to update the favorite status
    */
   async addFavorite(story) {
-    if (!this.favorites.includes(story)) {
-      this.favorites.push(story)
-    }
+    this.favorites.push(story);
 
     await axios({
       url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
@@ -227,9 +225,22 @@ class User {
       data: {
         token: this.loginToken
       }
-    })
-
+    });
   }
 
   //TODO: un-favorite method
+  async removeFavorite(story) {
+    const isFavorited = (element) => element === story;
+    const index = this.favorites.findIndex(isFavorited);
+
+    this.favorites.splice(index, 1);
+
+    await axios({
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+      method: "DELETE",
+      data: {
+        token: this.loginToken
+      }
+    });
+  }
 }

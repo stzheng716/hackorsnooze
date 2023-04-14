@@ -20,10 +20,24 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
+  console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
-  return $(`
+
+  if (currentUser.favorites.some((e) => e.storyId === story.storyId)) {
+    return $(`
+      <li id="${story.storyId}">
+        <i class="bi bi-star-fill"></i>
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </li>
+    `);
+  } else {
+    return $(`
       <li id="${story.storyId}">
         <i class="bi bi-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
@@ -34,24 +48,33 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+  }
 }
 
-const star = $(".bi")
-//TODO: add event listener to star to toggle the star fill + add to favorites
-async function handleStarClick(evt) {
-  evt.preventDefault()
 
-  const currentStoryID = $(evt.target).toggleClass("bi-star bi-star-fill")
-    .parent().attr("id")
+
+/**
+ * add event listener to star to toggle the star fill + add to favorites
+ *  if the star is filled, call the addFavorite function on the currentStory
+ * if the star is unfilled, call the removeFavorite function on the currentStory
+ */
+async function handleStarClick(evt) {
+  evt.preventDefault();
+  const currentStar = $(evt.target);
+  const currentStoryID = currentStar.toggleClass("bi-star bi-star-fill")
+    .parent().attr("id");
 
   storyList = await StoryList.getStories();
+  const currentStory = storyList.stories.find(story => story.storyId === currentStoryID);
 
-  const favoriteStory = storyList.stories.find(story => story.storyId === currentStoryID)
-  
-  currentUser.addFavorite(favoriteStory)
+  if (currentStar.hasClass("bi-star-fill")) {
+    currentUser.addFavorite(currentStory);
+  } else {
+    currentUser.removeFavorite(currentStory);
+  }
 }
 
-$allStoriesList.on("click", ".bi" , handleStarClick)
+$allStoriesList.on("click", ".bi", handleStarClick);
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
