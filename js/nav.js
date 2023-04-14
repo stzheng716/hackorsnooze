@@ -45,7 +45,22 @@ function updateNavOnLogin() {
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
-  $navSubmit.show()
+  // $navSubmit.show()
+  $navUserFeatures.show();
   $signupForm.hide();
   $loginForm.hide();
 }
+
+function handleNavFavoriteClick() {
+    $allStoriesList.empty();
+
+    // loop through all of our stories and generate HTML for them
+    for (let story of currentUser.favorites) {
+      const $story = generateStoryMarkup(story);
+      $allStoriesList.append($story);
+    }
+  
+    $allStoriesList.show();
+}
+
+$navFavorite.on("click", handleNavFavoriteClick);

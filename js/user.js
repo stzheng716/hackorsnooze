@@ -23,6 +23,7 @@ async function login(evt) {
 
   $loginForm.trigger("reset");
 
+  putStoriesOnPage()
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
 }

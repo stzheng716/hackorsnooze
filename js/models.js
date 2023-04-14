@@ -25,9 +25,14 @@ class Story {
   //TODO: parse out just the domain name of the article
   getHostName() {
     // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    let hostname = this.url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/)[1];
+    return hostname;
   }
 
+  static async getStoryById(storyID) {
+    const storyList = await StoryList.getStories()
+    return storyList.stories.find((e) => e.storyId === storyID)
+  }
 }
 
 
@@ -237,6 +242,7 @@ class User {
   async removeFavorite(story) {
     const isFavorited = (element) => element === story;
     const index = this.favorites.findIndex(isFavorited);
+    console.log(story)
 
     this.favorites.splice(index, 1);
 
