@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <i class="bi bi-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -33,6 +34,14 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+}
+
+const star = $(".bi")
+star.on("click", star.toggleClass())
+//TODO: add event listener to star to toggle the star fill + add to favorites
+function handleStarClick(evt) {
+  evt.preventDefault()
+  evt.target
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -70,6 +79,7 @@ async function getNewStoryAndDisplay(evt) {
   await storyList.addStory(currentUser, { title, author, url });
 
   putStoriesOnPage();
+  $newStoryForm.hide();
 }
 
 $newStoryForm.on("submit", getNewStoryAndDisplay);

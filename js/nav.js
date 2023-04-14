@@ -46,4 +46,6 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
   $navSubmit.show()
+  $signupForm.hide();
+  $loginForm.hide();
 }

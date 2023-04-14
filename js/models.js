@@ -210,4 +210,25 @@ class User {
       return null;
     }
   }
+
+  //TODO: favorite method
+  /**
+   * takes in an instance of the Story class
+   * sends a POST request to the API to update the favorite status
+   */
+  async addFavorite(story) {
+    if (!this.favorites.includes(story)) {
+      this.favorites.push(story)
+    }
+
+    await axios.post({
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+      method: "POST",
+      data: {
+        token: this.loginToken
+      }
+    })
+  }
+
+  //TODO: un-favorite method
 }
