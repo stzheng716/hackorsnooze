@@ -37,12 +37,21 @@ function generateStoryMarkup(story) {
 }
 
 const star = $(".bi")
-star.on("click", star.toggleClass())
 //TODO: add event listener to star to toggle the star fill + add to favorites
-function handleStarClick(evt) {
+async function handleStarClick(evt) {
   evt.preventDefault()
-  evt.target
+
+  const currentStoryID = $(evt.target).toggleClass("bi-star bi-star-fill")
+    .parent().attr("id")
+
+  storyList = await StoryList.getStories();
+
+  const favoriteStory = storyList.stories.find(story => story.storyId === currentStoryID)
+  
+  currentUser.addFavorite(favoriteStory)
 }
+
+$allStoriesList.on("click", ".bi" , handleStarClick)
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 

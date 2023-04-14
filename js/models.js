@@ -221,13 +221,14 @@ class User {
       this.favorites.push(story)
     }
 
-    await axios.post({
+    await axios({
       url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       method: "POST",
       data: {
         token: this.loginToken
       }
     })
+
   }
 
   //TODO: un-favorite method
